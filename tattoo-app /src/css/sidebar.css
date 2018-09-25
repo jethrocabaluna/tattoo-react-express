@@ -1,0 +1,41 @@
+.sidebar {
+  background-color: #383024;
+  width: 200px;
+  height: 400px;
+  border: 1px solid #000;
+  position: fixed;
+  top: 200px;
+  margin-left: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #383024;
+  padding: 5px;
+}
+
+.sidebar__heading {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: 2px;
+  font-weight: 100;
+}
+
+.tattoo__styles {
+  list-style: none;
+  margin-left: 10px;
+}
+
+.tattoo__style {
+  display: block;
+}
+
+.tattoo__style button {
+  background-color: transparent;
+  font-size: 16px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  color: rgb(179, 178, 124);
+}
+
+.tattoo__style button:hover {
+  color: #b8ae25;
+}

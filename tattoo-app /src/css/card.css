@@ -1,0 +1,41 @@
+.card-controller {
+  width: calc(100% - 500px);
+  margin: 60px auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  text-transform: uppercase;
+  font-weight: 100;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+.tattoo__cards {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.tattoo__cards::after {
+  width: 45%;
+  content: '';
+}
+
+.tattoo__card {
+  width: 45%;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
