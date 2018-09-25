@@ -3,45 +3,90 @@ import CardController from '../components/CardController';
 import Sidebar from '../components/Sidebar';
 import InquiryWidget from '../components/InquiryWidget';
 import TattooModal from '../components/TattooModal';
+import AddTattooForm from '../components/AddTattooForm';
+import '../css/home.css';
 
 class Home extends React.Component {
   state = {
-    showModal: false,
-    tattooPicked: {}
+    modalShown: false,
+    tattooPicked: {},
+    addFormShown: false,
+    tattoos: {}
   }
 
-  modalElement = '';
+  tattooModalElement = '';
+  addFormModalElement = '';
 
   openModal = (tattooPicked) => {
     this.setState({
-      showModal: true,
+      modalShown: true,
       tattooPicked
     });
-    this.modalElement = <TattooModal closeModal={this.closeModal} currentTattoo={tattooPicked} />;
+    this.tattooModalElement = <TattooModal closeModal={this.closeModal} currentTattoo={tattooPicked} />;
     this.props.modalHandler();
   }
 
   closeModal = () => {
     this.setState({
-      showModal: false
+      modalShown: false
     });
-    this.modalElement = '';
+    this.tattooModalElement = '';
     this.props.modalHandler();
   }
 
+  openAddForm = () => {
+    this.setState({
+      addFormShown: true
+    });
+    this.addFormModalElement = <AddTattooForm closeAddForm={ this.closeAddForm } updateTattoos={ this.updateTattoos } />;
+    this.props.modalHandler();
+  }
+
+  closeAddForm = () => {
+    this.setState({
+      addFormShown: false
+    });
+    this.addFormModalElement = '';
+    this.props.modalHandler();
+  }
+
+  updateTattoos = () => {
+    fetch('/api/tattoos')
+      .then(res => res.json())
+      .then(tattoos => {
+        this.setState({
+          tattoos
+        });
+      });
+  }
+
+  componentDidMount() {
+    fetch('/api/tattoos')
+      .then(res => res.json())
+      .then(tattoos => {
+        this.setState({
+          tattoos
+        });
+      });
+  }
+
   componentWillUnmount() {
-    if (this.state.showModal) {
+    if (this.state.modalShown) {
       this.closeModal();
+    } else if (this.state.addFormShown) {
+      this.closeAddForm();
     }
   }
 
   render() {
     return (
       <div className="home container">
+        <button className="add-tattoo-btn" onClick={this.openAddForm}>Add New Tattoo</button>
+        { this.addFormModalElement }
         <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']}/>
-        <CardController openModal={this.openModal} />
+        <CardController tattoos={this.state.tattoos} openModal={this.openModal} />
         <InquiryWidget />
-        { this.modalElement }
+        { this.tattooModalElement }
       </div>
     );
   }

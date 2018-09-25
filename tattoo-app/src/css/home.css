@@ -1,0 +1,11 @@
+.add-tattoo-btn {
+  padding: 10px;
+  font-size: 16px;
+  color: gold;
+  background-color: #3b3519;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 100;
+  position: fixed;
+  top: 57px;
+}
