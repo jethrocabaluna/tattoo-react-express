@@ -1,0 +1,22 @@
+{
+  "name": "tattoo-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "app-install": "cd tattoo-app && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "tattoo-app": "npm start --prefix tattoo-app",
+    "dev": "concurrently \"npm run server\" \"npm run tattoo-app\" "
+  },
+  "author": "me",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^4.0.1",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
