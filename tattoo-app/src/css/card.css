@@ -4,7 +4,7 @@
   text-align: center;
 }
 
-h1 {
+.card-controller__heading {
   font-size: 36px;
   text-transform: uppercase;
   font-weight: 100;
@@ -30,12 +30,11 @@ h1 {
   margin-bottom: 20px;
 }
 
-button {
+.tattoo__btn {
   width: 100%;
-  cursor: pointer;
 }
 
-img {
+.tattoo__image {
   width: 100%;
   height: auto;
 }

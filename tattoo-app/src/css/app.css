@@ -8,8 +8,16 @@ body {
   color: #867863;
 }
 
+button {
+  cursor: pointer;
+}
+
 .container {
   max-width: 1248px;
   margin: 0 auto;
   position: relative;
+}
+
+.overlay-on {
+  position: fixed;
 }
