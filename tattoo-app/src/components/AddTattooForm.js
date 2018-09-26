@@ -13,9 +13,7 @@ class AddTattooForm extends React.Component {
 
   addTattoo = e => {
     e.preventDefault();
-    console.log(this.tattooImageRef.current);
     const data = { tattooImage: this.tattooImageRef.current.value, tattooTitle: this.tattooTitleRef.current.value };
-    console.log(data);
 
     fetch('/api/tattoos', {
       method: 'POST',
@@ -24,7 +22,6 @@ class AddTattooForm extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         this.props.closeAddForm();
         this.props.updateTattoos();
       });
@@ -38,8 +35,8 @@ class AddTattooForm extends React.Component {
             <button type="button" className="tattoo-form__close-btn" onClick={this.props.closeAddForm}>X</button>
             <h1 className="tattoo-form__heading">Add New Tattoo</h1>
             <div className="form-group">
-              <label htmlFor="tattooImage">Image</label>
-              <input ref={this.tattooImageRef} type="file" name="tattooImage" id="tattooImage" required />
+              <label htmlFor="tattooImage">Image URL</label>
+              <input ref={this.tattooImageRef} type="text" name="tattooImage" id="tattooImage" required />
             </div>
 
             <div className="form-group">
