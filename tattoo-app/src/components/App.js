@@ -10,10 +10,6 @@ import '../css/app.css';
 
 
 class App extends React.Component {
-  state = {
-    mainClassName: 'tattoo-espanya'
-  }
-
   static propTypes = {
     match: PropTypes.object
   };
@@ -35,14 +31,16 @@ class App extends React.Component {
   }
 
   modalOverlayToggle = () => {
-    this.setState({
-      mainClassName: this.state.mainClassName.includes('overlay-on') ? this.state.mainClassName.replace(' overlay-on', '') : this.state.mainClassName + ' overlay-on'
-    });
+    if (!document.body.classList.contains('overlay-on')) {
+      document.body.classList.add('overlay-on');
+    } else {
+      document.body.classList.remove('overlay-on');
+    }
   }
 
   render() {
     return (
-      <div className={ this.state.mainClassName }>
+      <div className='tattoo-espanya'>
         <Navigation history={this.props.history} options={['home', 'about', 'services', 'contact']} />
         { this.renderContent() }
       </div>

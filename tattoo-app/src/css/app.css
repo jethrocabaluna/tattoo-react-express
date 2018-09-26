@@ -19,5 +19,6 @@ button {
 }
 
 .overlay-on {
-  position: fixed;
+  /* position: fixed; */
+  overflow: hidden;
 }
