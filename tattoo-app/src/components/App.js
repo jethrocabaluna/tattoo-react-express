@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import Navigation from './Navigation';
 import Home from '../pages/Home';
 import About from '../pages/About';
@@ -35,6 +36,14 @@ class App extends React.Component {
       document.body.classList.add('overlay-on');
     } else {
       document.body.classList.remove('overlay-on');
+    }
+  }
+
+  componentWillMount() {
+    const query = queryString.parse(this.props.location.search);
+    if (query.token) {
+      window.localStorage.setItem("jwt", query.token);
+      this.props.history.push("/");
     }
   }
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -8,8 +9,12 @@ const port = process.env.PORT || 5000;
 const tattoos = require('./sample-tattoos');
 // const tattoos = {};
 
+require('dotenv').config();
+
 mongoose.connect('mongodb://localhost:27017/tattoo_app', { useNewUrlParser: true });
 
+app.use(passport.initialize());
+require('./config/passport');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -19,6 +24,20 @@ const Tattoo = require('./models/tattoo');
 // app.get('/api/sample-tattoos', (req, res) => {
 //   res.json(sampleTattoos);
 // });
+
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/', session: false }),
+  (req, res) => {
+      const token = req.user.token;
+      res.redirect('http://localhost:3000?token=' + token);
+  }
+);
 
 app.get('/api/tattoos', (req, res) => {
   // res.json(tattoos);

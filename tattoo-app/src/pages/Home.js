@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import InquiryWidget from '../components/InquiryWidget';
 import TattooModal from '../components/TattooModal';
 import AddTattooForm from '../components/AddTattooForm';
+import GoogleLoginBtn from '../components/GoogleLoginBtn';
 import '../css/home.css';
 
 class Home extends React.Component {
@@ -83,6 +84,7 @@ class Home extends React.Component {
       <div className="home container">
         <button className="add-tattoo-btn" onClick={this.openAddForm}>Add New Tattoo</button>
         { this.addFormModalElement }
+        <GoogleLoginBtn />
         <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']}/>
         <CardController tattoos={this.state.tattoos} openModal={this.openModal} />
         <InquiryWidget />
