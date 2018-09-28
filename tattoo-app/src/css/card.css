@@ -1,6 +1,6 @@
 .card-controller {
-  width: calc(100% - 500px);
-  margin: 60px auto;
+  width: calc(100% - 250px);
+  margin: 60px 20px 60px auto;
   text-align: center;
 }
 
