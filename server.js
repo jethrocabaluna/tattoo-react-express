@@ -8,7 +8,6 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const tattoos = require('./sample-tattoos');
-// const tattoos = {};
 
 require('dotenv').config();
 
@@ -33,10 +32,6 @@ app.use((req, res, next) => {
 // -------- Models -------- //
 const Tattoo = require('./models/tattoo');
 
-// app.get('/api/sample-tattoos', (req, res) => {
-//   res.json(sampleTattoos);
-// });
-
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
@@ -60,7 +55,6 @@ app.get('/isLoggedIn', (req, res) => {
 });
 
 app.get('/api/tattoos', (req, res) => {
-  // res.json(tattoos);
   Tattoo.find({}, (err, tattoos) => {
     if (err) {
       console.log(err);
@@ -88,8 +82,6 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/api/tattoos', (req, res) => {
-  // tattoos[`tattoo${Date.now()}`] = { name: req.body.tattooTitle, image: req.body.tattooImage };
-  // res.json(tattoos);
   const newTattoo = { name: req.body.title, image: req.body.image, style: req.body.style };
 
   Tattoo.create(newTattoo, (err, createdTattoo) => {

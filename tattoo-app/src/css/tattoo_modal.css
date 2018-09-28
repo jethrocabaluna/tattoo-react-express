@@ -39,6 +39,23 @@
 }
 
 .tattoo-modal__image {
+  max-height: 500px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.tattoo-modal__relateds {
   width: 100%;
-  margin-bottom: 60px;
+  margin-top: 10px;
+  display: flex;
+}
+
+.tattoo-modal__relateds li {
+  width: 150px;
+}
+
+
+.tattoo-modal__relateds img {
+  width: 100%;
 }
