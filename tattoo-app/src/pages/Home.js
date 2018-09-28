@@ -12,7 +12,8 @@ class Home extends React.Component {
     modalShown: false,
     tattooPicked: {},
     addFormShown: false,
-    tattoos: {}
+    tattoos: {},
+    isLoggedIn: false
   }
 
   tattooModalElement = '';
@@ -61,7 +62,29 @@ class Home extends React.Component {
       });
   }
 
+  userCheck = () => {
+    if (this.state.isLoggedIn) {
+      return (
+        <div className="user-btns">
+          <button className="btn-1" onClick={this.openAddForm}>Add New Tattoo</button>
+          <a href="http://localhost:5000/logout" className="btn-1">Logout</a>
+        </div>
+      );
+    } else {
+      return <GoogleLoginBtn />;
+    }
+  }
+
   componentDidMount() {
+    fetch('/isLoggedIn')
+      .then(res => res.json())
+      .then(status => {
+        console.log(status);
+        this.setState({
+          ...status
+        });
+      });
+
     fetch('/api/tattoos')
       .then(res => res.json())
       .then(tattoos => {
@@ -82,9 +105,8 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home container">
-        <button className="add-tattoo-btn" onClick={this.openAddForm}>Add New Tattoo</button>
+        { this.userCheck() }
         { this.addFormModalElement }
-        <GoogleLoginBtn />
         <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']}/>
         <CardController tattoos={this.state.tattoos} openModal={this.openModal} />
         <InquiryWidget />

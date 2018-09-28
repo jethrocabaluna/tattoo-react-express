@@ -3,7 +3,12 @@
   position: relative;
 }
 
-.add-tattoo-btn {
+.user-btns {
+  position: fixed;
+  top: 57px;
+}
+
+.btn-1 {
   padding: 10px;
   font-size: 16px;
   color: gold;
@@ -11,6 +16,8 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 100;
-  position: fixed;
-  top: 57px;
+  display: block;
+  text-decoration: none;
+  border: 1px solid gold;
+  margin-bottom: 5px;
 }
