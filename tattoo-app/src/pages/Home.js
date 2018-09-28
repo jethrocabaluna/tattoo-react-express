@@ -13,7 +13,8 @@ class Home extends React.Component {
     tattooPicked: {},
     addFormShown: false,
     tattoos: {},
-    isLoggedIn: false
+    isLoggedIn: false,
+    tattooStyleFilter: ''
   }
 
   tattooModalElement = '';
@@ -57,7 +58,19 @@ class Home extends React.Component {
       .then(res => res.json())
       .then(tattoos => {
         this.setState({
-          tattoos
+          tattoos,
+          tattooStyleFilter: ''
+        });
+      });
+  }
+
+  filterTattoos = (style) => {
+    fetch(`/api/tattoos/${style.toLowerCase()}`)
+      .then(res => res.json())
+      .then(filteredTattoos => {
+        this.setState({
+          tattoos: filteredTattoos,
+          tattooStyleFilter: style
         });
       });
   }
@@ -107,8 +120,8 @@ class Home extends React.Component {
       <div className="home container">
         { this.userCheck() }
         { this.addFormModalElement }
-        <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']}/>
-        <CardController tattoos={this.state.tattoos} openModal={this.openModal} />
+        <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']} filterTattoos={this.filterTattoos} showAllTattoo={this.updateTattoos}/>
+        <CardController tattoos={this.state.tattoos} openModal={this.openModal} tattooStyleFilter={this.state.tattooStyleFilter} />
         <InquiryWidget />
         { this.tattooModalElement }
       </div>

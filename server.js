@@ -71,6 +71,17 @@ app.get('/api/tattoos', (req, res) => {
   });
 });
 
+app.get('/api/tattoos/:style', (req, res) => {
+  Tattoo.find({ style: req.params.style }, (err, filteredTattoos) => {
+    if (err) {
+      console.log(err);
+      res.json(err);
+      return;
+    }
+    res.json(filteredTattoos);
+  });
+});
+
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('http://localhost:3000');
@@ -79,7 +90,7 @@ app.get('/logout', (req, res) => {
 app.post('/api/tattoos', (req, res) => {
   // tattoos[`tattoo${Date.now()}`] = { name: req.body.tattooTitle, image: req.body.tattooImage };
   // res.json(tattoos);
-  const newTattoo = { name: req.body.tattooTitle, image: req.body.tattooImage };
+  const newTattoo = { name: req.body.title, image: req.body.image, style: req.body.style };
 
   Tattoo.create(newTattoo, (err, createdTattoo) => {
     if (err) {

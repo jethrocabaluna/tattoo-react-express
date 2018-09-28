@@ -2,8 +2,9 @@ import React from 'react';
 import '../css/tattoo_form.css';
 
 class AddTattooForm extends React.Component {
-  tattooImageRef = React.createRef();
-  tattooTitleRef = React.createRef();
+  imageRef = React.createRef();
+  titleRef = React.createRef();
+  styleRef = React.createRef();
 
   closeAddForm(e) {
     if (e.target === e.currentTarget) {
@@ -13,7 +14,7 @@ class AddTattooForm extends React.Component {
 
   addTattoo = e => {
     e.preventDefault();
-    const data = { tattooImage: this.tattooImageRef.current.value, tattooTitle: this.tattooTitleRef.current.value };
+    const data = { image: this.imageRef.current.value, title: this.titleRef.current.value, style: this.styleRef.current.value };
 
     fetch('/api/tattoos', {
       method: 'POST',
@@ -35,13 +36,25 @@ class AddTattooForm extends React.Component {
             <button type="button" className="tattoo-form__close-btn" onClick={this.props.closeAddForm}>X</button>
             <h1 className="tattoo-form__heading">Add New Tattoo</h1>
             <div className="form-group">
-              <label htmlFor="tattooImage">Image URL</label>
-              <input ref={this.tattooImageRef} type="text" name="tattooImage" id="tattooImage" required />
+              <label htmlFor="image">Image URL</label>
+              <input ref={this.imageRef} type="text" name="image" id="image" required />
             </div>
 
             <div className="form-group">
-              <label htmlFor="tattooTitle">Title</label>
-              <input ref={this.tattooTitleRef} type="text" name="tattooTitle" id="tattooTitle" required />
+              <label htmlFor="title">Title</label>
+              <input ref={this.titleRef} type="text" name="title" id="title" required />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="style">Style</label>
+              <select ref={this.styleRef} name="style" id="style">
+                <option value="traditional">traditional</option>
+                <option value="realism">realism</option>
+                <option value="tribal">tribal</option>
+                <option value="neo traditional">neo traditional</option>
+                <option value="others">others</option>
+              </select>
+              
             </div>
 
             <button className="tattoo-form__submit-btn">Add</button>

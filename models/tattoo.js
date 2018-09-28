@@ -9,6 +9,10 @@ const TattooSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  style: {
+    type: String,
+    required: true
+  },
   created: {
     type: Date,
     default: Date.now
