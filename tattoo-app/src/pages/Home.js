@@ -93,10 +93,7 @@ class Home extends React.Component {
           });
           return;
         }
-        console.log(this.state.tattoos);
-        console.log(moreTattoos);
         const newTattoos = [...this.state.tattoos, ...moreTattoos];
-        console.log(newTattoos);
         this.setState({
           tattoos: newTattoos
         });
@@ -133,7 +130,6 @@ class Home extends React.Component {
     fetch('/isLoggedIn')
       .then(res => res.json())
       .then(status => {
-        console.log(status);
         this.setState({
           ...status
         });

@@ -1,15 +1,55 @@
 .inquiry-widget {
   position: fixed;
-  width: 150px;
-  height: 60px;
-  background-color: #ccc;
-  padding: 10px;
-  border-radius: 5px;
   box-shadow: 0 0 10px #ccc;
   bottom: 30px;
   margin-left: 20px;
+  border-radius: 5px;
+  background-color: #ccc;
+  overflow: hidden;
+}
+
+.inquiry-widget__btn {
+  padding: 20px 60px;
+  background-color: transparent;
+  border: none;
 }
 
 .inquiry__heading {
   color: #232323;
+}
+
+.inquiry-widget__form > * {
+  display: block;
+  margin: 5px;
+}
+
+.inquiry-widget__close {
+  background-color: #ff0000;
+  color: #fff;
+  margin-left: auto;
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.inquiry-widget__email, .inquiry-widget__message, .inquiry-widget__submit {
+  font-size: 16px;
+  padding: 5px;
+}
+
+.inquiry-widget__email, .inquiry-widget__message {
+  width: 300px;
+}
+
+.inquiry-widget__message {
+  resize: none;
+  height: 150px;
+}
+
+.inquiry-widget__submit {
+  background-color: #338855;
+  color: #fff;
 }
