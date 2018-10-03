@@ -12,6 +12,14 @@
   color: #ccc;
 }
 
+.card-controller__filter {
+  color: #fff;
+  text-transform: capitalize;
+  letter-spacing: 3px;
+  font-weight: 100;
+  margin-bottom: 20px;
+}
+
 .tattoo__cards {
   display: flex;
   list-style: none;

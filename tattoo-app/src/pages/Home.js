@@ -8,13 +8,30 @@ import GoogleLoginBtn from '../components/GoogleLoginBtn';
 import '../css/home.css';
 
 class Home extends React.Component {
+  constructor(props) {
+    super();
+    window.onscroll = () => {
+      if (this.state.tattoosLimitReached) return;
+      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+        setTimeout(() => {
+          this.loadMoreTattoos(this.state.tattoosBatch);
+          this.setState({
+            tattoosBatch: this.state.tattoosBatch + 1
+          });
+        }, 300);
+      }
+    }
+  }
+  
   state = {
     modalShown: false,
     tattooPicked: {},
     addFormShown: false,
     tattoos: {},
     isLoggedIn: false,
-    tattooStyleFilter: ''
+    tattooStyleFilter: '',
+    tattoosLimitReached: false,
+    tattoosBatch: 2
   }
 
   tattooModalElement = '';
@@ -54,23 +71,47 @@ class Home extends React.Component {
   }
 
   updateTattoos = () => {
-    fetch('/api/tattoos')
+    fetch('/api/tattoos/batch/1')
       .then(res => res.json())
       .then(tattoos => {
         this.setState({
           tattoos,
-          tattooStyleFilter: ''
+          tattooStyleFilter: '',
+          tattoosLimitReached: false,
+          tattoosBatch: 2
+        });
+      });
+  }
+
+  loadMoreTattoos = (batch) => {
+    fetch(`/api/tattoos${this.state.tattooStyleFilter !== '' ? '/styles/' + this.state.tattooStyleFilter.toLowerCase() : '/batch'}/${batch}`)
+      .then(res => res.json())
+      .then(moreTattoos => {
+        if (moreTattoos.limitReached) {
+          this.setState({
+            tattoosLimitReached: false
+          });
+          return;
+        }
+        console.log(this.state.tattoos);
+        console.log(moreTattoos);
+        const newTattoos = [...this.state.tattoos, ...moreTattoos];
+        console.log(newTattoos);
+        this.setState({
+          tattoos: newTattoos
         });
       });
   }
 
   filterTattoos = (style) => {
-    fetch(`/api/tattoos/${style.toLowerCase()}`)
+    fetch(`/api/tattoos/styles/${style.toLowerCase()}/1`)
       .then(res => res.json())
       .then(filteredTattoos => {
         this.setState({
           tattoos: filteredTattoos,
-          tattooStyleFilter: style
+          tattooStyleFilter: style,
+          tattoosLimitReached: false,
+          tattoosBatch: 2
         });
       });
   }
@@ -98,7 +139,7 @@ class Home extends React.Component {
         });
       });
 
-    fetch('/api/tattoos')
+    fetch('/api/tattoos/batch/1')
       .then(res => res.json())
       .then(tattoos => {
         this.setState({
@@ -121,7 +162,7 @@ class Home extends React.Component {
         { this.userCheck() }
         { this.addFormModalElement }
         <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']} filterTattoos={this.filterTattoos} showAllTattoo={this.updateTattoos}/>
-        <CardController tattoos={this.state.tattoos} openModal={this.openModal} tattooStyleFilter={this.state.tattooStyleFilter} />
+        <CardController tattoos={this.state.tattoos} openModal={this.openModal} tattooStyleFilter={this.state.tattooStyleFilter} loadMoreTattoos={this.loadMoreTattoos} limitReached={this.state.tattoosLimitReached} batch={2} />
         <InquiryWidget />
         { this.tattooModalElement }
       </div>

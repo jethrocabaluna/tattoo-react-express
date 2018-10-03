@@ -65,7 +65,34 @@ app.get('/api/tattoos', (req, res) => {
   });
 });
 
-app.get('/api/tattoos/:style', (req, res) => {
+app.get('/api/tattoos/batch/:batch', (req, res) => {
+  const batch = parseInt(req.params.batch);
+  const limit = 4;
+  let batchCount = null;
+  Tattoo.count((err, count) => {
+    if (err) {
+      console.log(err);
+      res.json(err);
+      return;
+    }
+    batchCount = Math.ceil(count/limit);
+    if (batch > batchCount) {
+      res.json({limitReached: true});
+      return;
+    }
+
+    Tattoo.find({}, (err, allTattoos) => {
+      if (err) {
+        console.log(err);
+        res.json(err);
+        return;
+      }
+      res.json(allTattoos);
+    }).skip(limit * (batch - 1)).limit(limit).sort({ created: -1 });
+  });
+});
+
+app.get('/api/tattoos/styles/:style', (req, res) => {
   Tattoo.find({ style: req.params.style }, (err, filteredTattoos) => {
     if (err) {
       console.log(err);
@@ -73,6 +100,33 @@ app.get('/api/tattoos/:style', (req, res) => {
       return;
     }
     res.json(filteredTattoos);
+  });
+});
+
+app.get('/api/tattoos/styles/:style/:batch', (req, res) => {
+  const batch = parseInt(req.params.batch);
+  const limit = 4;
+  let batchCount = null;
+  Tattoo.count({ style: req.params.style } ,(err, count) => {
+    if (err) {
+      console.log(err);
+      res.json(err);
+      return;
+    }
+    batchCount = Math.ceil(count / limit);
+    if (batch > batchCount) {
+      res.json({ limitReached: true });
+      return;
+    }
+
+    Tattoo.find({ style: req.params.style }, (err, filteredTattoos) => {
+      if (err) {
+        console.log(err);
+        res.json(err);
+        return;
+      }
+      res.json(filteredTattoos);
+    }).skip(limit * (batch - 1)).limit(limit).sort({ created: -1 });
   });
 });
 

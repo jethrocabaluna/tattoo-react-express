@@ -20,7 +20,7 @@ class TattooModal extends React.Component {
   }
 
   getSimilarTattoos = () => {
-    fetch(`/api/tattoos/${this.state.currentTattoo.style.toLowerCase()}`)
+    fetch(`/api/tattoos/styles/${this.state.currentTattoo.style.toLowerCase()}`)
       .then(res => res.json())
       .then(similarTattoos => {
         this.setState({
