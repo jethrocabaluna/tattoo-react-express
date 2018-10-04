@@ -11,7 +11,8 @@ const tattoos = require('./sample-tattoos');
 
 require('dotenv').config();
 
-mongoose.connect('mongodb://localhost:27017/tattoo_app', { useNewUrlParser: true });
+// mongoose.connect('mongodb://localhost:27017/tattoo_app', { useNewUrlParser: true });
+mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true });
 
 app.use(session({
   secret: "tattoo",

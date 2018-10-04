@@ -5,10 +5,9 @@
   "main": "server.js",
   "scripts": {
     "app-install": "cd tattoo-app && npm install",
-    "start": "node server.js",
     "server": "nodemon server.js",
     "tattoo-app": "npm start --prefix tattoo-app",
-    "dev": "concurrently \"npm run server\" \"npm run tattoo-app\" "
+    "start": "concurrently \"npm run server\" \"npm run tattoo-app\" "
   },
   "author": "me",
   "license": "ISC",
