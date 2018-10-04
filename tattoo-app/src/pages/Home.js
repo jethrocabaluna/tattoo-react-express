@@ -8,7 +8,7 @@ import GoogleLoginBtn from '../components/GoogleLoginBtn';
 import '../css/home.css';
 
 class Home extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     window.onscroll = () => {
       if (this.state.tattoosLimitReached) return;

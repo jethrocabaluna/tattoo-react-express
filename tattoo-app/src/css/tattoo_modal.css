@@ -58,6 +58,19 @@
   flex: 0 0 150px;
 }
 
+.tattoo-modal__relateds li button {
+  background-color: #000;
+}
+
+.tattoo-modal__relateds li button.current {
+  pointer-events: none;
+  cursor: default;
+}
+
+.tattoo-modal__relateds li button.current img {
+  opacity: .3;
+}
+
 
 .tattoo-modal__relateds img {
   width: 100%;

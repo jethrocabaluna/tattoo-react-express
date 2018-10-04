@@ -10,6 +10,7 @@
   font-weight: 100;
   margin-bottom: 20px;
   color: #ccc;
+  letter-spacing: 5px;
 }
 
 .card-controller__filter {

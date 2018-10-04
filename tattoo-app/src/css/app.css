@@ -3,6 +3,14 @@
   margin: 0;
 }
 
+*:focus {
+  outline: 2px solid #8a0808;
+}
+
+body.using-mouse :focus {
+    outline: none;
+}
+
 body {
   background-color: #000;
   color: #867863;
@@ -19,6 +27,9 @@ button {
 }
 
 .overlay-on {
-  /* position: fixed; */
   overflow: hidden;
+}
+
+.ml-1 {
+  margin-left: 10px;
 }

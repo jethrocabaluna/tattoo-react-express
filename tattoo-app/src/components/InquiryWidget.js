@@ -41,7 +41,7 @@ class InquiryWidget extends React.Component {
   render() {
     return (
       <div className="inquiry-widget">
-        <button className="inquiry-widget__btn" onClick={this.openInquireForm}>
+        <button className={ this.state.formOpened ? 'inquiry-widget__btn disabled' : 'inquiry-widget__btn' } onClick={this.openInquireForm}>
           <h3 className="inquiry__heading">Inquire</h3>
         </button>
         { this.renderInquireForm() }

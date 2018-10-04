@@ -43,7 +43,7 @@ class TattooModal extends React.Component {
           <ul className="tattoo-modal__relateds">
             {
               Object.keys(this.state.similarTattoos).map(tattoo => (
-                <li key={this.state.similarTattoos[tattoo].name}><button onClick={() => this.updateModal(this.state.similarTattoos[tattoo])}><img src={this.state.similarTattoos[tattoo].image} /></button></li>
+                <li key={this.state.similarTattoos[tattoo].name}><button className={this.state.currentTattoo._id === this.state.similarTattoos[tattoo]._id ? 'current' : '' } onClick={() => this.updateModal(this.state.similarTattoos[tattoo])}><img src={this.state.similarTattoos[tattoo].image} /></button></li>
               ))
             }
           </ul>

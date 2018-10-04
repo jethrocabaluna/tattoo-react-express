@@ -11,6 +11,19 @@ import '../css/app.css';
 
 
 class App extends React.Component {
+  constructor() {
+    super();
+
+    // Let the document know when the mouse is being used
+    document.body.addEventListener('mousedown', () => {
+      document.body.classList.add('using-mouse');
+    });
+
+    document.body.addEventListener('keydown', () => {
+      document.body.classList.remove('using-mouse');
+    });
+  }
+
   static propTypes = {
     match: PropTypes.object
   };
