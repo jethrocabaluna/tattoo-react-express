@@ -1,7 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/card.css';
 
 class CardController extends React.Component {
+  static propTypes = {
+    tattooStyleFilter: PropTypes.string,
+    tattoos: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.array
+    ])
+  };
+
   tattooStyle() {
     if (this.props.tattooStyleFilter !== '') {
       return <p className="card-controller__filter">{this.props.tattooStyleFilter}</p>

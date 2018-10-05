@@ -1,7 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/tattoo_modal.css';
 
 class TattooModal extends React.Component {
+  static propTypes = {
+    closeModal: PropTypes.func,
+    currentTattoo: PropTypes.object
+  }
+
   state = {
     currentTattoo: this.props.currentTattoo,
     similarTattoos: {}

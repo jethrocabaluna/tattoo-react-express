@@ -1,10 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/tattoo_form.css';
 
 class AddTattooForm extends React.Component {
   imageRef = React.createRef();
   titleRef = React.createRef();
   styleRef = React.createRef();
+
+  static propTypes = {
+    closeAddForm: PropTypes.func,
+    updateTattoos: PropTypes.func
+  };
 
   closeAddForm(e) {
     if (e.target === e.currentTarget) {

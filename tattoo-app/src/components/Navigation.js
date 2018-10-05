@@ -8,7 +8,8 @@ class Navigation extends React.Component {
   }
 
   static propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    options: PropTypes.arrayOf(PropTypes.string)
   }
 
   changeContent = value => {

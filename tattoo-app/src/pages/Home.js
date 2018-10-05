@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CardController from '../components/CardController';
 import Sidebar from '../components/Sidebar';
 import InquiryWidget from '../components/InquiryWidget';
@@ -21,6 +22,10 @@ class Home extends React.Component {
         }, 300);
       }
     }
+  }
+
+  static propTypes = {
+    modalHandler: PropTypes.func
   }
   
   state = {

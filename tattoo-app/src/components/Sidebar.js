@@ -1,7 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/sidebar.css';
 
 class Sidebar extends React.Component {
+  static propTypes = {
+    showAllTattoo: PropTypes.func,
+    filterTattoos: PropTypes.func,
+    tattooStyles: PropTypes.arrayOf(PropTypes.string)
+  }
+
   state = {
     currentFilter: 'All'
   }
