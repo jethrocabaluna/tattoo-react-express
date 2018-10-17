@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import queryString from 'query-string';
+import qs from 'qs';
 import Navigation from './Navigation';
 import Home from '../pages/Home';
 import About from '../pages/About';
@@ -53,7 +53,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    const query = queryString.parse(this.props.location.search);
+    const query = qs.parse(this.props.location.search);
     if (query.token) {
       window.localStorage.setItem("jwt", query.token);
       this.props.history.push("/");
