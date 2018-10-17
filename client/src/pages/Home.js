@@ -123,7 +123,7 @@ class Home extends React.Component {
       return (
         <div className="user-btns">
           <button className="btn-1" onClick={this.openAddForm}>Add New Tattoo</button>
-          <a href="http://localhost:5000/logout" className="btn-1">Logout</a>
+          <a href="https://tattoo-app.herokuapp.com:5000/logout" className="btn-1">Logout</a>
         </div>
       );
     } else {

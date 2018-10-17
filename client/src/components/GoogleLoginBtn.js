@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/google_btn.css';
 
 const GoogleLoginBtn = () => (
-  <a href="http://localhost:5000/auth/google" className="google-btn">
+  <a href="https://tattoo-app.herokuapp.com:5000/auth/google" className="google-btn">
     <div>
       <span className="svgIcon t-popup-svg">
         <svg
