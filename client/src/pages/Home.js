@@ -13,12 +13,14 @@ class Home extends React.Component {
     super();
     window.onscroll = () => {
       if (this.state.tattoosLimitReached) return;
-      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+      if (((Math.abs(window.innerHeight + document.documentElement.scrollTop) - document.documentElement.offsetHeight) < 1) && !this.isLoadingTattoos) {
+        this.isLoadingTattoos = true;
         setTimeout(() => {
           this.loadMoreTattoos(this.state.tattoosBatch);
           this.setState({
             tattoosBatch: this.state.tattoosBatch + 1
           });
+          this.isLoadingTattoos = false;
         }, 300);
       }
     }
@@ -41,6 +43,7 @@ class Home extends React.Component {
 
   tattooModalElement = '';
   addFormModalElement = '';
+  isLoadingTattoos = false;
 
   openModal = (tattooPicked) => {
     this.setState({
