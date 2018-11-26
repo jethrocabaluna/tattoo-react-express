@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CardController from '../components/CardController';
 import Sidebar from '../components/Sidebar';
@@ -8,121 +8,92 @@ import AddTattooForm from '../components/AddTattooForm';
 import GoogleLoginBtn from '../components/GoogleLoginBtn';
 import '../css/home.css';
 
-class Home extends React.Component {
-  constructor() {
-    super();
-    window.onscroll = () => {
-      if (this.state.tattoosLimitReached) return;
-      if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-        setTimeout(() => {
-          this.loadMoreTattoos(this.state.tattoosBatch);
-          this.setState({
-            tattoosBatch: this.state.tattoosBatch + 1
-          });
-        }, 300);
-      }
+function Home({ modalHandler }) {
+  window.onscroll = () => {
+    if (tattoosLimitReached) return;
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+      setTimeout(() => {
+        loadMoreTattoos(tattoosBatch);
+        setTattoosBatch(tattoosBatch + 1);
+      }, 300);
     }
   }
 
-  static propTypes = {
-    modalHandler: PropTypes.func
-  }
-  
-  state = {
-    modalShown: false,
-    tattooPicked: {},
-    addFormShown: false,
-    tattoos: {},
-    isLoggedIn: false,
-    tattooStyleFilter: '',
-    tattoosLimitReached: false,
-    tattoosBatch: 2
-  }
+  const [modalShown, setModalShown] = useState(false);
+  const [tattooPicked, setTattooPicked] = useState({});
+  const [addFormShown, setAddFormShown] = useState(false);
+  const [tattoos, setTattoos] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [tattooStyleFilter, setTattooStyleFilter] = useState('');
+  const [tattoosLimitReached, setTattoosLimitReached] = useState(false);
+  const [tattoosBatch, setTattoosBatch] = useState(2);
+  const [tattooModalElement, setTattooModalElement] = useState('');
+  const [addFormModalElement, setAddFormModalElement] = useState('');
 
-  tattooModalElement = '';
-  addFormModalElement = '';
-
-  openModal = (tattooPicked) => {
-    this.setState({
-      modalShown: true,
-      tattooPicked
-    });
-    this.tattooModalElement = <TattooModal closeModal={this.closeModal} currentTattoo={tattooPicked} />;
-    this.props.modalHandler();
+  function openModal(tattooPicked) {
+    setTattooPicked(tattooPicked);
+    setModalShown(true);
+    setTattooModalElement(<TattooModal closeModalHandler={closeModal} tattooPicked={tattooPicked} />);
+    modalHandler();
   }
 
-  closeModal = () => {
-    this.setState({
-      modalShown: false
-    });
-    this.tattooModalElement = '';
-    this.props.modalHandler();
+  function closeModal() {
+    setModalShown(false);
+    setTattooModalElement('');
+    modalHandler();
   }
 
-  openAddForm = () => {
-    this.setState({
-      addFormShown: true
-    });
-    this.addFormModalElement = <AddTattooForm closeAddForm={ this.closeAddForm } updateTattoos={ this.updateTattoos } />;
-    this.props.modalHandler();
+  function openAddForm() {
+    setAddFormShown(true);
+    setAddFormModalElement(<AddTattooForm closeAddFormHandler={closeAddForm} updateTattoos={updateTattoos} />);
+    modalHandler();
   }
 
-  closeAddForm = () => {
-    this.setState({
-      addFormShown: false
-    });
-    this.addFormModalElement = '';
-    this.props.modalHandler();
+  function closeAddForm() {
+    setAddFormShown(false);
+    setAddFormModalElement('');
+    modalHandler();
   }
 
-  updateTattoos = () => {
+  function updateTattoos() {
     fetch('/api/tattoos/batch/1')
       .then(res => res.json())
       .then(tattoos => {
-        this.setState({
-          tattoos,
-          tattooStyleFilter: '',
-          tattoosLimitReached: false,
-          tattoosBatch: 2
-        });
+        setTattoos(tattoos);
+        setTattooStyleFilter('');
+        setTattoosLimitReached(false);
+        setTattoosBatch(2);
       });
   }
 
-  loadMoreTattoos = (batch) => {
-    fetch(`/api/tattoos${this.state.tattooStyleFilter !== '' ? '/styles/' + this.state.tattooStyleFilter.toLowerCase() : '/batch'}/${batch}`)
+  function loadMoreTattoos(batch) {
+    fetch(`/api/tattoos${tattooStyleFilter !== '' ? '/styles/' + tattooStyleFilter.toLowerCase() : '/batch'}/${batch}`)
       .then(res => res.json())
       .then(moreTattoos => {
         if (moreTattoos.limitReached) {
-          this.setState({
-            tattoosLimitReached: false
-          });
+          setTattoosLimitReached(false);
           return;
         }
-        const newTattoos = [...this.state.tattoos, ...moreTattoos];
-        this.setState({
-          tattoos: newTattoos
-        });
+        setTattoos([...tattoos, ...moreTattoos]);
       });
   }
 
-  filterTattoos = (style) => {
+  function filterTattoos(style) {
     fetch(`/api/tattoos/styles/${style.toLowerCase()}/1`)
       .then(res => res.json())
       .then(filteredTattoos => {
-        this.setState({
-          tattoos: filteredTattoos,
-          tattooStyleFilter: style,
-          tattoosLimitReached: false,
-          tattoosBatch: 2
-        });
+        setTattoos(filteredTattoos);
+        setTattooStyleFilter(style);
+        setTattoosLimitReached(false);
+        setTattoosBatch(2);
       });
   }
 
-  userCheck = () => {
-    if (this.state.isLoggedIn) {
+  function userCheck() {
+    if (isLoggedIn) {
       return (
         <div className="user-btns">
-          <button className="btn-1" onClick={this.openAddForm}>Add New Tattoo</button>
+          <button className="btn-1" onClick={openAddForm}>Add New Tattoo</button>
           <a href="http://localhost:5000/logout" className="btn-1">Logout</a>
         </div>
       );
@@ -131,44 +102,48 @@ class Home extends React.Component {
     }
   }
 
-  componentDidMount() {
+  useEffect(() => {
     fetch('/isLoggedIn')
       .then(res => res.json())
       .then(status => {
-        this.setState({
-          ...status
-        });
+        setIsLoggedIn(status.isLoggedIn);
       });
 
     fetch('/api/tattoos/batch/1')
       .then(res => res.json())
       .then(tattoos => {
-        this.setState({
-          tattoos
-        });
+        setTattoos(tattoos);
       });
-  }
 
-  componentWillUnmount() {
-    if (this.state.modalShown) {
-      this.closeModal();
-    } else if (this.state.addFormShown) {
-      this.closeAddForm();
-    }
-  }
+    return () => {
+      if (modalShown) {
+        closeModal();
+      } else if (addFormShown) {
+        closeAddForm();
+      }
+    };
+  }, []);
 
-  render() {
-    return (
-      <div className="home container">
-        { this.userCheck() }
-        { this.addFormModalElement }
-        <Sidebar tattooStyles={['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others']} filterTattoos={this.filterTattoos} showAllTattoo={this.updateTattoos}/>
-        <CardController tattoos={this.state.tattoos} openModal={this.openModal} tattooStyleFilter={this.state.tattooStyleFilter} loadMoreTattoos={this.loadMoreTattoos} limitReached={this.state.tattoosLimitReached} batch={2} />
-        <InquiryWidget />
-        { this.tattooModalElement }
-      </div>
-    );
-  }
+  return (
+    <div className="home container">
+      { userCheck() }
+      { addFormModalElement }
+      <Sidebar 
+      tattooStyles={ ['Traditional', 'Realism', 'Tribal', 'Neo Traditional', 'Others'] } 
+      filterTattoos={ filterTattoos } showAllTattoo={ updateTattoos }/>
+
+      <CardController 
+      tattoos={ tattoos } 
+      openModal={ openModal } 
+      tattooStyleFilter={ tattooStyleFilter } />
+      <InquiryWidget />
+      { tattooModalElement }
+    </div>
+  );
+}
+
+Home.propTypes = {
+  modalHandler: PropTypes.func
 }
 
 export default Home;

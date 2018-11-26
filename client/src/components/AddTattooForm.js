@@ -2,25 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../css/tattoo_form.css';
 
-class AddTattooForm extends React.Component {
-  imageRef = React.createRef();
-  titleRef = React.createRef();
-  styleRef = React.createRef();
+function AddTattooForm({ closeAddFormHandler, updateTattoos }) {
+  const imageRef = React.createRef();
+  const titleRef = React.createRef();
+  const styleRef = React.createRef();
 
-  static propTypes = {
-    closeAddForm: PropTypes.func,
-    updateTattoos: PropTypes.func
-  };
-
-  closeAddForm(e) {
+  function closeAddForm(e) {
     if (e.target === e.currentTarget) {
-      this.props.closeAddForm();
+      closeAddFormHandler();
     }
   }
 
-  addTattoo = e => {
+  function addTattoo(e) {
     e.preventDefault();
-    const data = { image: this.imageRef.current.value, title: this.titleRef.current.value, style: this.styleRef.current.value };
+    const data = { image: imageRef.current.value, title: titleRef.current.value, style: styleRef.current.value };
 
     fetch('/api/tattoos', {
       method: 'POST',
@@ -29,46 +24,49 @@ class AddTattooForm extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.props.closeAddForm();
-        this.props.updateTattoos();
+        closeAddFormHandler();
+        updateTattoos();
       });
   };
 
-  render() {
-    return (
-      <div className="tattoo-form__wrapper" onClick={(e) => this.closeAddForm(e)}>
-        <div className="tattoo-form">
-          <form action="/api/tattoos" id="add-tattoo" onSubmit={this.addTattoo}>
-            <button type="button" className="tattoo-form__close-btn" onClick={this.props.closeAddForm}>X</button>
-            <h1 className="tattoo-form__heading">Add New Tattoo</h1>
-            <div className="form-group">
-              <label htmlFor="image">Image URL</label>
-              <input ref={this.imageRef} type="text" name="image" id="image" required />
-            </div>
+  return (
+    <div className="tattoo-form__wrapper" onClick={closeAddForm}>
+      <div className="tattoo-form">
+        <form action="/api/tattoos" id="add-tattoo" onSubmit={addTattoo}>
+          <button type="button" className="tattoo-form__close-btn" onClick={closeAddForm}>X</button>
+          <h1 className="tattoo-form__heading">Add New Tattoo</h1>
+          <div className="form-group">
+            <label htmlFor="image">Image URL</label>
+            <input ref={imageRef} type="text" name="image" id="image" required />
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input ref={this.titleRef} type="text" name="title" id="title" required />
-            </div>
+          <div className="form-group">
+            <label htmlFor="title">Title</label>
+            <input ref={titleRef} type="text" name="title" id="title" required />
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="style">Style</label>
-              <select ref={this.styleRef} name="style" id="style">
-                <option value="traditional">traditional</option>
-                <option value="realism">realism</option>
-                <option value="tribal">tribal</option>
-                <option value="neo traditional">neo traditional</option>
-                <option value="others">others</option>
-              </select>
-              
-            </div>
+          <div className="form-group">
+            <label htmlFor="style">Style</label>
+            <select ref={styleRef} name="style" id="style">
+              <option value="traditional">traditional</option>
+              <option value="realism">realism</option>
+              <option value="tribal">tribal</option>
+              <option value="neo traditional">neo traditional</option>
+              <option value="others">others</option>
+            </select>
+            
+          </div>
 
-            <button className="tattoo-form__submit-btn">Add</button>
-          </form>
-        </div>
+          <button className="tattoo-form__submit-btn">Add</button>
+        </form>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+AddTattooForm.propTypes = {
+  closeAddForm: PropTypes.func,
+  updateTattoos: PropTypes.func
 }
 
 export default AddTattooForm;

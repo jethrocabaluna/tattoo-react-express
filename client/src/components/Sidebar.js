@@ -1,44 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../css/sidebar.css';
 
-class Sidebar extends React.Component {
-  static propTypes = {
-    showAllTattoo: PropTypes.func,
-    filterTattoos: PropTypes.func,
-    tattooStyles: PropTypes.arrayOf(PropTypes.string)
-  }
+function Sidebar({ showAllTattoo, filterTattoos, tattooStyles }) {
+  const [currentFilter, setCurrentFilter] = useState('All');
 
-  state = {
-    currentFilter: 'All'
-  }
-
-  handleFilterClick(e, style = 'All') {
+  function handleFilterClick(e, style = 'All') {
     if (style === 'All') {
-      this.props.showAllTattoo();
+      showAllTattoo();
     } else {
-      this.props.filterTattoos(style);
+      filterTattoos(style);
     }
-    this.setState({
-      currentFilter: e.target.textContent
-    });
+    setCurrentFilter(e.target.textContent);
   }
 
-  render() {
-    return (
-      <div className="sidebar">
-        <h3 className="sidebar__heading">Tattoo Styles</h3>
-        <ul className="tattoo__styles">
-          <li key="all" className={this.state.currentFilter === 'All' ? 'tattoo__style active-filter' : 'tattoo__style'}><button onClick={(e) => this.handleFilterClick(e)}>All</button></li>
-          {
-            this.props.tattooStyles.map(style => (
-              <li key={style} className={this.state.currentFilter === style ? 'tattoo__style ml-1 active-filter' : 'tattoo__style ml-1' }><button onClick={(e) => this.handleFilterClick(e, style)}>{style}</button></li>
-            ))
-          }
-        </ul>
-      </div>
-    )
-  }
+  return (
+    <div className="sidebar">
+      <h3 className="sidebar__heading">Tattoo Styles</h3>
+      <ul className="tattoo__styles">
+        <li 
+        key="all" 
+        className={currentFilter === 'All' ? 'tattoo__style active-filter' : 'tattoo__style'}>
+          <button 
+          onClick={handleFilterClick}>All
+          </button>
+        </li>
+        {
+          tattooStyles.map(style => (
+            <li 
+            key={style} 
+            className={currentFilter === style ? 'tattoo__style ml-1 active-filter' : 'tattoo__style ml-1' }>
+              <button 
+              onClick={(e) => handleFilterClick(e, style)}>{style}
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  )
+}
+
+Sidebar.propTypes = {
+  showAllTattoo: PropTypes.func,
+  filterTattoos: PropTypes.func,
+  tattooStyles: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default Sidebar;

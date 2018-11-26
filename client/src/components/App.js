@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import Navigation from './Navigation';
@@ -9,30 +9,20 @@ import Contact from '../pages/Contact';
 import NotFound from '../pages/NotFound';
 import '../css/app.css';
 
+function App({ match, location, history }) {
+  document.body.addEventListener('mousedown', () => {
+    document.body.classList.add('using-mouse');
+  });
 
-class App extends React.Component {
-  constructor() {
-    super();
+  document.body.addEventListener('keydown', () => {
+    document.body.classList.remove('using-mouse');
+  });
 
-    // Let the document know when the mouse is being used
-    document.body.addEventListener('mousedown', () => {
-      document.body.classList.add('using-mouse');
-    });
-
-    document.body.addEventListener('keydown', () => {
-      document.body.classList.remove('using-mouse');
-    });
-  }
-
-  static propTypes = {
-    match: PropTypes.object
-  };
-
-  renderContent() {
-    const contentName = this.props.match.params.contentName;
-    const isHome = this.props.match.path === '/';
+  function renderContent() {
+    const contentName = match.params.contentName;
+    const isHome = match.path === '/';
     if (contentName === 'home' || isHome) {
-      return <Home modalHandler={this.modalOverlayToggle} />;
+      return <Home modalHandler={ modalOverlayToggle } />;
     } else if (contentName === 'about') {
       return <About />;
     } else if (contentName === 'services') {
@@ -44,7 +34,7 @@ class App extends React.Component {
     }
   }
 
-  modalOverlayToggle = () => {
+  function modalOverlayToggle () {
     if (!document.body.classList.contains('overlay-on')) {
       document.body.classList.add('overlay-on');
     } else {
@@ -52,22 +42,24 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
-    const query = qs.parse(this.props.location.search);
+  useEffect(() => {
+    const query = qs.parse(location.search);
     if (query.token) {
       window.localStorage.setItem("jwt", query.token);
-      this.props.history.push("/");
+      history.push("/");
     }
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className='tattoo-espanya'>
-        <Navigation history={this.props.history} options={['home', 'about', 'services', 'contact']} />
-        { this.renderContent() }
-      </div>
-    );
-  }
+  return (
+    <div className='tattoo-espanya'>
+      <Navigation history={history} options={['home', 'about', 'services', 'contact']} />
+      { renderContent() }
+    </div>
+  );
+}
+
+App.propTypes = {
+  match: PropTypes.object
 }
 
 export default App;
