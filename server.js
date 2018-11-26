@@ -53,7 +53,7 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
       const token = req.user.token;
-      res.redirect('http://localhost:3000?token=' + token);
+    res.redirect(`https://${process.env.HOST}:3000?token=` + token);
   }
 );
 
@@ -143,7 +143,7 @@ app.get('/api/tattoos/styles/:style/:batch', (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('http://localhost:3000');
+  res.redirect(`https://${process.env.HOST}:3000`);
 });
 
 app.post('/api/tattoos', (req, res) => {
