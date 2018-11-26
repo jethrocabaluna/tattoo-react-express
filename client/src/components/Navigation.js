@@ -1,45 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import NavButton from './NavButton';
 import '../css/navigation.css';
 
-class Navigation extends React.Component {
-  state = {
-    activeLink: 'home'
-  }
+function Navigation({ history, options }) {
+  const [activeLink, setActiveLink] = useState('home');
 
-  static propTypes = {
-    history: PropTypes.object,
-    options: PropTypes.arrayOf(PropTypes.string)
-  }
-
-  changeContent = value => {
+  function changeContent(value) {
     const contentName = value;
-    this.props.history.push(`/section/${value}`);
-    this.setState({
-      activeLink: value
-    });
+    history.push(`/section/${value}`);
+    setActiveLink(value);
   }
-
-  render() {
-    return (
-      <nav className="navigation">
-        <ul className="navigation__items container">
-          {
-            this.props.options.map(option => (
-              <li key={option} className="navigation__item"><NavButton value={option} isActive={option === this.state.activeLink} onClick={this.changeContent} /></li>
-            ))
-          }
-        </ul>
-      </nav>
-    );
-  }
+  return (
+    <nav className="navigation">
+      <ul className="navigation__items container">
+        {
+          options.map(option => (
+            <li 
+            key={option} 
+            className="navigation__item">
+              <NavButton 
+              value={option} 
+              isActive={option === activeLink} 
+              onClick={changeContent} />
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  );
 }
 
-const NavButton = props => {
-  const className = props.isActive ? 'active' : '';
-  return (
-    <button className={className} onClick={() => props.onClick(props.value)}>{props.value}</button>
-  );
+Navigation.propTypes = {
+  history: PropTypes.object,
+  options: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default Navigation;
